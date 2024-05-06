@@ -167,7 +167,7 @@ namespace fatpound::win32::dx11
                 throw std::runtime_error("Could NOT create Subresource Buffer!");
             }
 
-            const std::array<D3D11_INPUT_ELEMENT_DESC, 2> ied =
+            constexpr std::array<D3D11_INPUT_ELEMENT_DESC, 2> ied =
             {
                 {
                     {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -254,11 +254,11 @@ namespace fatpound::win32::dx11
 
             Color* pDst = reinterpret_cast<Color*>(mappedSysBufferTexture_.pData);
 
-            const size_t dstPitch = mappedSysBufferTexture_.RowPitch / sizeof(Color);
-            const size_t srcPitch = Graphics::ScreenWidth;
-            const size_t rowBytes = srcPitch * sizeof(Color);
+            const std::size_t dstPitch = mappedSysBufferTexture_.RowPitch / sizeof(Color);
+            constexpr std::size_t srcPitch = Graphics::ScreenWidth;
+            constexpr std::size_t rowBytes = srcPitch * sizeof(Color);
 
-            for (size_t y = 0u; y < Graphics::ScreenHeight; ++y)
+            for (std::size_t y = 0u; y < Graphics::ScreenHeight; ++y)
             {
                 std::memcpy(&pDst[y * dstPitch], &pSysBuffer_[y * srcPitch], rowBytes);
             }

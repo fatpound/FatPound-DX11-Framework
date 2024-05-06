@@ -30,10 +30,10 @@ export namespace fatpound::win32::dx11
         Window(HINSTANCE hInst);
 
         Window() = delete;
-        Window(const Window&) = delete;
-        Window(Window&&) = delete;
-        Window& operator = (const Window&) = delete;
-        Window& operator = (Window&&) = delete;
+        Window(const Window& src) = delete;
+        Window(Window&& src) = delete;
+        Window& operator = (const Window& src) = delete;
+        Window& operator = (Window&& src) = delete;
         ~Window();
 
 
