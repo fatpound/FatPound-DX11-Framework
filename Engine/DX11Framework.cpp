@@ -7,22 +7,11 @@ module DX11Framework;
 namespace fatpound::win32::dx11
 {
     Framework::Framework(HINSTANCE hInst)
-        try
         :
         wnd_(hInst),
         gfx_(wnd_.GetHwnd())
     {
 
-    }
-    catch (const std::exception& ex)
-    {
-        throw ex;
-    }
-    catch (...)
-    {
-        MessageBox(nullptr, L"Non-STD Exception was thrown when entering Framework CTOR!", L"Framework Error", MB_OK | MB_ICONERROR);
-
-        throw;
     }
 
     void Framework::Run()

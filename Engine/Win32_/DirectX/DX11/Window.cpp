@@ -14,66 +14,53 @@ namespace fatpound::win32::dx11
         :
         hInst_(hInst)
     {
-        try
+        WNDCLASSEX wc = {};
+        wc.cbSize = sizeof(wc);
+        wc.style = CS_CLASSDC;
+        wc.lpfnWndProc = &Window::HandleMsgSetup_;
+        wc.cbClsExtra = 0;
+        wc.cbWndExtra = 0;
+        wc.hInstance = hInst_;
+        wc.hIcon = nullptr;
+        wc.hCursor = nullptr;
+        wc.hbrBackground = nullptr;
+        wc.lpszMenuName = nullptr;
+        wc.lpszClassName = Window::wndClassName_;
+        wc.hIconSm = nullptr;
+        wc.hIcon = nullptr;
+        wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+        RegisterClassEx(&wc);
+
+        RECT wr = {};
+        wr.left = 150;
+        wr.right = Graphics::ScreenWidth + wr.left;
+        wr.top = 150;
+        wr.bottom = Graphics::ScreenHeight + wr.top;
+
+        AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+
+        hWnd_ = CreateWindow(
+            Window::wndClassName_,
+            L"FatPound DX11 Framework",
+            WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+            wr.left/*CW_USEDEFAULT*/,
+            wr.top/*CW_USEDEFAULT*/,
+            wr.right - wr.left,
+            wr.bottom - wr.top,
+            nullptr,
+            nullptr,
+            hInst,
+            this
+        );
+
+        if (hWnd_ == nullptr) [[unlikely]]
         {
-            WNDCLASSEX wc = {};
-            wc.cbSize = sizeof(wc);
-            wc.style = CS_CLASSDC;
-            wc.lpfnWndProc = &Window::HandleMsgSetup_;
-            wc.cbClsExtra = 0;
-            wc.cbWndExtra = 0;
-            wc.hInstance = hInst_;
-            wc.hIcon = nullptr;
-            wc.hCursor = nullptr;
-            wc.hbrBackground = nullptr;
-            wc.lpszMenuName = nullptr;
-            wc.lpszClassName = wndClassName_;
-            wc.hIconSm = nullptr;
-            wc.hIcon = nullptr;
-            wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-
-            RegisterClassEx(&wc);
-
-            RECT wr = {};
-            wr.left = 150;
-            wr.right = Graphics::ScreenWidth + wr.left;
-            wr.top = 150;
-            wr.bottom = Graphics::ScreenHeight + wr.top;
-
-            AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
-
-            hWnd_ = CreateWindow(
-                wndClassName_,
-                L"FatPound DX11 Framework",
-                WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-                wr.left/*CW_USEDEFAULT*/,
-                wr.top/*CW_USEDEFAULT*/,
-                wr.right - wr.left,
-                wr.bottom - wr.top,
-                nullptr,
-                nullptr,
-                hInst,
-                this
-            );
-
-            if (hWnd_ == nullptr) [[unlikely]]
-            {
-                throw std::runtime_error("Could NOT create HWND!");
-            }
-
-            ShowWindow(hWnd_, SW_SHOWDEFAULT);
-            UpdateWindow(hWnd_);
+            throw std::runtime_error("Could NOT create HWND!");
         }
-        catch (const std::exception& ex)
-        {
-            throw ex;
-        }
-        catch (...)
-        {
-            MessageBox(nullptr, L"Non-STD Exception was thrown inside Window CTOR!", L"Window Error", MB_OK | MB_ICONERROR);
 
-            throw;
-        }
+        ShowWindow(hWnd_, SW_SHOWDEFAULT);
+        UpdateWindow(hWnd_);
     }
     Window::~Window()
     {
@@ -135,7 +122,6 @@ namespace fatpound::win32::dx11
     }
     LRESULT WINAPI Window::HandleMsgThunk_(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
-
         Window* const pWnd = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
         return pWnd->HandleMsg_(hWnd, msg, wParam, lParam);
