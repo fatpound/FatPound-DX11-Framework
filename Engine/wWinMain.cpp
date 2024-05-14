@@ -18,14 +18,16 @@ import <stdexcept>;
 #endif // _MSVC_LANG > 202002L
 
 int APIENTRY wWinMain(
-	/*[[maybe_unused]]*/ _In_     HINSTANCE hInst,
-	[[maybe_unused]]     _In_opt_ HINSTANCE hPrevInst,
-	[[maybe_unused]]     _In_     LPWSTR lpCmdLine,
-	[[maybe_unused]]     _In_     int nShowCmd)
+	/* [[maybe_unused]] */ _In_     HINSTANCE hInst,
+	   [[maybe_unused]]    _In_opt_ HINSTANCE hPrevInst,
+	   [[maybe_unused]]    _In_     LPWSTR lpCmdLine,
+	   [[maybe_unused]]    _In_     int nShowCmd)
 {
 	try
 	{
 		fatpound::win32::dx11::Framework{ hInst }.Run();
+
+		return 0;
 	}
 	catch (const std::exception& ex)
 	{
@@ -33,15 +35,11 @@ int APIENTRY wWinMain(
 		const std::wstring wstr{ str.cbegin(), str.cend() };
 
 		MessageBox(nullptr, wstr.c_str(), L"Error", MB_OK | MB_ICONERROR);
-
-		return -1;
 	}
 	catch (...)
 	{
 		MessageBox(nullptr, L"Non-STD Exception was thrown...", L"Error", MB_OK | MB_ICONERROR);
-
-		return -1;
 	}
 
-	return 0;
+	return -1;
 }

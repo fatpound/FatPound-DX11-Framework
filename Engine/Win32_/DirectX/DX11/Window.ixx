@@ -31,8 +31,8 @@ export namespace fatpound::win32::dx11
 
         Window() = delete;
         Window(const Window& src) = delete;
-        Window(Window&& src) = delete;
         Window& operator = (const Window& src) = delete;
+        Window(Window&& src) = delete;
         Window& operator = (Window&& src) = delete;
         ~Window();
 
@@ -58,6 +58,9 @@ export namespace fatpound::win32::dx11
     private:
         static LRESULT CALLBACK HandleMsgSetup_(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
         static LRESULT CALLBACK HandleMsgThunk_(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+
+    private:
         LRESULT HandleMsg_(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 

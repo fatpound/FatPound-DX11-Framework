@@ -34,13 +34,13 @@ export namespace fatpound::win32::io
 {
     class Mouse final
     {
-        friend class fatpound::win32::dx11::Window;
+        friend class ::fatpound::win32::dx11::Window;
 
     public:
         Mouse() = default;
         Mouse(const Mouse& src) = delete;
-        Mouse(Mouse&& src) = delete;
         Mouse& operator = (const Mouse& src) = delete;
+        Mouse(Mouse&& src) = delete;
         Mouse& operator = (Mouse&& src) = delete;
         ~Mouse() = default;
 
@@ -79,7 +79,7 @@ export namespace fatpound::win32::io
             Event(Type type, const Mouse& parent) noexcept;
 
         public:
-            std::pair<int, int> GetPos() const noexcept;
+            auto GetPos() const noexcept -> std::pair<int, int>;
 
             Type GetType() const noexcept;
 
@@ -106,8 +106,9 @@ export namespace fatpound::win32::io
 
 
     public:
-        std::pair<int, int> GetPos() const noexcept;
-        std::optional<RawDelta> ReadRawDelta() noexcept;
+        auto GetPos() const noexcept -> std::pair<int, int>;
+
+        auto ReadRawDelta() noexcept -> std::optional<RawDelta>;
 
         Event ReadFromBuffer() noexcept;
 
@@ -145,8 +146,6 @@ export namespace fatpound::win32::io
 
 
     private:
-        static constexpr unsigned int bufferSize_ = 16u;
-
         std::queue<Event> buffer_;
         std::queue<RawDelta> rawDeltaBuffer_;
 
@@ -158,5 +157,7 @@ export namespace fatpound::win32::io
         bool leftIsPressed_ = false;
         bool rightIsPressed_ = false;
         bool wheelIsPressed_ = false;
+
+        static constexpr unsigned int bufferSize_ = 16u;
     };
 }

@@ -34,13 +34,13 @@ export namespace fatpound::win32::io
 {
     class Keyboard final
     {
-        friend class fatpound::win32::dx11::Window;
+        friend class ::fatpound::win32::dx11::Window;
 
     public:
         Keyboard() = default;
         Keyboard(const Keyboard& src) = delete;
-        Keyboard(Keyboard&& src) = delete;
         Keyboard& operator = (const Keyboard& src) = delete;
+        Keyboard(Keyboard&& src) = delete;
         Keyboard& operator = (Keyboard&& src) = delete;
         ~Keyboard() = default;
 
@@ -117,7 +117,6 @@ export namespace fatpound::win32::io
 
     private:
         static constexpr unsigned int keyCount_ = 256u;
-        static constexpr unsigned int bufferSize_ = 16u;
 
         std::bitset<keyCount_> keystates_;
 
@@ -125,5 +124,7 @@ export namespace fatpound::win32::io
         std::queue<char> charbuffer_;
 
         bool autoRepeatEnabled_ = false;
+
+        static constexpr unsigned int bufferSize_ = 16u;
     };
 }

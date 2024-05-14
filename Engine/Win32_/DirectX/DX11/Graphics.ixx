@@ -42,8 +42,8 @@ export namespace fatpound::win32::dx11
 
         Graphics() = delete;
         Graphics(const Graphics& src) = delete;
-        Graphics(Graphics&& src) = delete;
         Graphics& operator = (const Graphics& src) = delete;
+        Graphics(Graphics&& src) = delete;
         Graphics& operator = (Graphics&& src) = delete;
         ~Graphics();
 
@@ -67,11 +67,11 @@ export namespace fatpound::win32::dx11
         {
             struct Vertex final
             {
-                float x, y, z;  // position
-                float u, v;     // texcoords
+                float x, y, z;
+                float u, v;
             };
 
-            static constexpr std::array<FullScreenQuad_::Vertex, 6> vertices =
+            static constexpr std::array<Vertex, 6> vertices =
             {
                 Vertex{ -1.0f,  1.0f,  0.5f,  0.0f,  0.0f },
                 Vertex{  1.0f,  1.0f,  0.5f,  1.0f,  0.0f },
