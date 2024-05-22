@@ -18,7 +18,7 @@
     <ClCompile Include="wWinMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Color.ixx">
+    <ClCompile Include="Util\FatColor.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Util\AutoTimer.cpp">

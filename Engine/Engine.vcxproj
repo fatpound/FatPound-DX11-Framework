@@ -149,7 +149,7 @@
   <ItemGroup>
     <ClCompile Include="DX11Framework.cpp" />
     <ClCompile Include="DX11Framework.ixx" />
-    <ClCompile Include="Util\Color.ixx" />
+    <ClCompile Include="Util\FatColor.ixx" />
     <ClCompile Include="Util\AutoTimer.cpp" />
     <ClCompile Include="Util\AutoTimer.ixx" />
     <ClCompile Include="Win32_\DirectX\DX11\Graphics.cpp" />
