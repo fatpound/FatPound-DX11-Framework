@@ -11,12 +11,7 @@ export import Keyboard;
 import std;
 #else
 #if _MSVC_LANG == 202002L
-#ifdef NDEBUG
 import std.core;
-#else
-import <string>;
-import <stdexcept>;
-#endif // NDEBUG
 #else
 #error C++20 or greater version required
 #endif // _MSVC_LANG == 202002L
@@ -48,8 +43,8 @@ export namespace fatpound::win32::dx11
 
 
     public:
-        fatpound::win32::io::Keyboard kbd;
-        fatpound::win32::io::Mouse mouse;
+        NAMESPACE_IO::Keyboard kbd;
+        NAMESPACE_IO::Mouse mouse;
 
 
     protected:
@@ -68,6 +63,9 @@ export namespace fatpound::win32::dx11
         HWND hWnd_ = nullptr;
         HINSTANCE hInst_ = nullptr;
 
+        static constexpr bool cursor_enabled_ = true;
+
+        static constexpr auto title_        = L"FatPound DX11 Framework";
         static constexpr auto wndClassName_ = L"FatPound DirectX11 Framework Window";
     };
 }

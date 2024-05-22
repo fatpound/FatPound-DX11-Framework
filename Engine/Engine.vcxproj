@@ -79,6 +79,8 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,6 +98,8 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,6 +117,8 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +136,8 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,9 +149,9 @@
   <ItemGroup>
     <ClCompile Include="DX11Framework.cpp" />
     <ClCompile Include="DX11Framework.ixx" />
-    <ClCompile Include="Util\FatColor.ixx" />
-    <ClCompile Include="Util\FatTimer.cpp" />
-    <ClCompile Include="Util\FatTimer.ixx" />
+    <ClCompile Include="Util\Color.ixx" />
+    <ClCompile Include="Util\AutoTimer.cpp" />
+    <ClCompile Include="Util\AutoTimer.ixx" />
     <ClCompile Include="Win32_\DirectX\DX11\Graphics.cpp" />
     <ClCompile Include="Win32_\DirectX\DX11\Graphics.ixx" />
     <ClCompile Include="Win32_\DirectX\DX11\Window.cpp" />
@@ -156,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32_\FatWin32_.hpp" />
+    <ClInclude Include="Win32_\FatWin32_Namespaces.hpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Win32_\DirectX\DX11\Shader\PSFrameBuffer.hlsl">

@@ -1,26 +1,17 @@
 module;
 
-#if _MSVC_LANG == 202002L
-#ifndef NDEBUG
-#include <bitset>
-#include <queue>
-#endif // !NDEBUG
-#else
-#if _MSVC_LANG < 202002L
-#error C++20 or greater version required
-#endif // _MSVC_LANG < 202002L
-#endif // _MSVC_LANG == 202002L
-
 module Keyboard;
 
 namespace fatpound::win32::io
 {
+    // Keyboard
+
     auto Keyboard::ReadKeyFromBuffer() noexcept -> Event
     {
-        if (keybuffer_.size() > 0u)
+        if (event_buffer_.size() > 0u)
         {
-            Event e = keybuffer_.front();
-            keybuffer_.pop();
+            Event e = event_buffer_.front();
+            event_buffer_.pop();
 
             return e;
         }
@@ -30,43 +21,41 @@ namespace fatpound::win32::io
 
     char Keyboard::ReadCharFromBuffer() noexcept
     {
-        if (charbuffer_.size() > 0u)
+        if (char_buffer_.size() > 0u)
         {
-            unsigned char charcode = charbuffer_.front();
-            charbuffer_.pop();
+            unsigned char charcode = char_buffer_.front();
+            char_buffer_.pop();
 
             return charcode;
         }
-        else
-        {
-            return 0;
-        }
+
+        return 0;
     }
 
-    bool Keyboard::AutoRepeatIsEnabled() const noexcept
+    bool Keyboard::KeyIsPressed(unsigned char keycode) const noexcept
     {
-        return autoRepeatEnabled_;
-    }
-    bool Keyboard::CharBufferIsEmpty() const noexcept
-    {
-        return charbuffer_.empty();
+        return key_states_[keycode];
     }
     bool Keyboard::KeyBufferIsEmpty() const noexcept
     {
-        return keybuffer_.empty();
+        return event_buffer_.empty();
     }
-    bool Keyboard::KeyIsPressed(unsigned char keycode) const noexcept
+    bool Keyboard::CharBufferIsEmpty() const noexcept
     {
-        return keystates_[keycode];
+        return char_buffer_.empty();
+    }
+    bool Keyboard::AutoRepeatIsEnabled() const noexcept
+    {
+        return auto_repeat_enabled_;
     }
 
     void Keyboard::FlushKeyBuffer() noexcept
     {
-        keybuffer_ = std::queue<Event>();
+        event_buffer_ = std::queue<Event>{};
     }
     void Keyboard::FlushCharBuffer() noexcept
     {
-        charbuffer_ = std::queue<char>();
+        char_buffer_ = std::queue<char>{};
     }
     void Keyboard::FlushBuffers() noexcept
     {
@@ -75,36 +64,39 @@ namespace fatpound::win32::io
     }
     void Keyboard::EnableAutoRepeat() noexcept
     {
-        autoRepeatEnabled_ = true;
+        auto_repeat_enabled_ = true;
     }
     void Keyboard::DisableAutoRepeat() noexcept
     {
-        autoRepeatEnabled_ = false;
+        auto_repeat_enabled_ = false;
     }
 
     void Keyboard::OnKeyPressed_(unsigned char keycode) noexcept
     {
-        keystates_[keycode] = true;
-        keybuffer_.push(Keyboard::Event(Keyboard::Event::Type::Press, keycode));
+        key_states_[keycode] = true;
 
-        TrimBuffer_(keybuffer_);
+        event_buffer_.push({ Event::Type::Press, keycode });
+
+        TrimBuffer_(event_buffer_);
     }
     void Keyboard::OnKeyReleased_(unsigned char keycode) noexcept
     {
-        keystates_[keycode] = false;
-        keybuffer_.push(Keyboard::Event(Keyboard::Event::Type::Release, keycode));
+        key_states_[keycode] = false;
 
-        TrimBuffer_(keybuffer_);
+        event_buffer_.push({ Event::Type::Release, keycode });
+
+        TrimBuffer_(event_buffer_);
     }
     void Keyboard::OnChar_(char character) noexcept
     {
-        charbuffer_.push(character);
+        char_buffer_.push(character);
 
-        TrimBuffer_(charbuffer_);
+        TrimBuffer_(char_buffer_);
     }
+
     void Keyboard::ClearKeyStateBitset_() noexcept
     {
-        keystates_.reset();
+        key_states_.reset();
     }
 
 
@@ -112,7 +104,7 @@ namespace fatpound::win32::io
 
     Keyboard::Event::Event() noexcept
         :
-        type_(Event::Type::Invalid),
+        type_(Type::Invalid),
         code_(0u)
     {
 
@@ -132,14 +124,14 @@ namespace fatpound::win32::io
 
     bool Keyboard::Event::IsPress() const noexcept
     {
-        return type_ == Event::Type::Press;
+        return type_ == Type::Press;
     }
     bool Keyboard::Event::IsRelease() const noexcept
     {
-        return type_ == Event::Type::Release;
+        return type_ == Type::Release;
     }
     bool Keyboard::Event::IsInvalid() const noexcept
     {
-        return type_ == Event::Type::Invalid;
+        return type_ == Type::Invalid;
     }
 }

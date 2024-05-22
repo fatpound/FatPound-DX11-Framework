@@ -21,14 +21,20 @@ namespace fatpound::win32::dx11
         wc.cbClsExtra = 0;
         wc.cbWndExtra = 0;
         wc.hInstance = hInst_;
-        wc.hIcon = nullptr;
-        wc.hCursor = nullptr;
         wc.hbrBackground = nullptr;
         wc.lpszMenuName = nullptr;
         wc.lpszClassName = Window::wndClassName_;
-        wc.hIconSm = nullptr;
         wc.hIcon = nullptr;
-        wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+        wc.hIconSm = nullptr;
+
+        if constexpr (Window::cursor_enabled_)
+        {
+            wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+        }
+        else
+        {
+            ShowCursor(false);
+        }
 
         RegisterClassEx(&wc);
 
@@ -42,7 +48,7 @@ namespace fatpound::win32::dx11
 
         hWnd_ = CreateWindow(
             Window::wndClassName_,
-            L"FatPound DX11 Framework",
+            Window::title_,
             WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
             wr.left/*CW_USEDEFAULT*/,
             wr.top/*CW_USEDEFAULT*/,
@@ -64,6 +70,7 @@ namespace fatpound::win32::dx11
     }
     Window::~Window()
     {
+        DestroyWindow(hWnd_);
         UnregisterClass(wndClassName_, hInst_);
     }
 
@@ -113,7 +120,7 @@ namespace fatpound::win32::dx11
             assert(pWnd != nullptr);
 
             SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
-            SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::HandleMsgThunk_));
+            SetWindowLongPtr(hWnd, GWLP_WNDPROC,  reinterpret_cast<LONG_PTR>(&Window::HandleMsgThunk_));
 
             return pWnd->HandleMsg_(hWnd, msg, wParam, lParam);
         }
@@ -176,7 +183,7 @@ namespace fatpound::win32::dx11
                 if (wParam & (MK_LBUTTON | MK_RBUTTON))
                 {
                     pt.x = std::max(static_cast<short int>(0), pt.x);
-                    pt.x = std::min(static_cast<short int>(Graphics::ScreenWidth - 1), pt.x);
+                    pt.x = std::min(static_cast<short int>(Graphics::ScreenWidth  - 1), pt.x);
                     pt.y = std::max(static_cast<short int>(0), pt.y);
                     pt.y = std::min(static_cast<short int>(Graphics::ScreenHeight - 1), pt.y);
 

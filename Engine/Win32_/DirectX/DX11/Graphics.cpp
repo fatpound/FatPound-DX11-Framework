@@ -6,8 +6,6 @@ module;
 #include <d3dcompiler.h>
 #include <wrl.h>
 
-#include <immintrin.h>
-
 #include <cassert>
 
 #define MSAA_QUALITY 1u
@@ -25,8 +23,6 @@ namespace fatpound::win32::dx11
 {
     Graphics::Graphics(HWND hWnd)
     {
-        assert(hWnd != nullptr);
-
         DXGI_SWAP_CHAIN_DESC sd = {};
         sd.BufferCount = 1u;
         sd.BufferDesc.Width = Graphics::ScreenWidth;

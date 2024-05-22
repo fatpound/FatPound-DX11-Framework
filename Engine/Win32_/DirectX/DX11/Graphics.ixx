@@ -5,12 +5,6 @@ module;
 #include <d3d11.h>
 #include <wrl.h>
 
-#if _MSVC_LANG == 202002L
-#ifndef NDEBUG
-#include <array>
-#endif // !NDEBUG
-#endif // _MSVC_LANG == 202002L
-
 export module DX11Graphics;
 
 import FatColor;
@@ -19,15 +13,7 @@ import FatColor;
 import std;
 #else
 #if _MSVC_LANG == 202002L
-#ifdef NDEBUG
 import std.core;
-#else
-import <string>;
-import <array>;
-import <stdexcept>;
-//
-import <new>;
-#endif // NDEBUG
 #else
 #error C++20 or greater version required
 #endif // _MSVC_LANG == 202002L

@@ -1,15 +1,6 @@
 module;
 
-#if _MSVC_LANG == 202002L
-#ifndef NDEBUG
-#include <bitset>
-#include <queue>
-#endif // !NDEBUG
-#else
-#if _MSVC_LANG < 202002L
-#error C++20 or greater version required
-#endif // _MSVC_LANG < 202002L
-#endif // _MSVC_LANG == 202002L
+#include "../FatWin32_Namespaces.hpp"
 
 export module Keyboard;
 
@@ -17,9 +8,7 @@ export module Keyboard;
 import std;
 #else
 #if _MSVC_LANG == 202002L
-#ifdef NDEBUG
 import std.core;
-#endif // NDEBUG
 #else
 #error C++20 or greater version required
 #endif // _MSVC_LANG == 202002L
@@ -34,7 +23,7 @@ export namespace fatpound::win32::io
 {
     class Keyboard final
     {
-        friend class ::fatpound::win32::dx11::Window;
+        friend class NAMESPACE_DX11::Window;
 
     public:
         Keyboard() = default;
@@ -82,15 +71,14 @@ export namespace fatpound::win32::io
 
         char ReadCharFromBuffer() noexcept;
 
-        bool AutoRepeatIsEnabled() const noexcept;
-        bool CharBufferIsEmpty() const noexcept;
-        bool KeyBufferIsEmpty() const noexcept;
         bool KeyIsPressed(unsigned char keycode) const noexcept;
+        bool KeyBufferIsEmpty() const noexcept;
+        bool CharBufferIsEmpty() const noexcept;
+        bool AutoRepeatIsEnabled() const noexcept;
 
         void FlushKeyBuffer() noexcept;
         void FlushCharBuffer() noexcept;
         void FlushBuffers() noexcept;
-
         void EnableAutoRepeat() noexcept;
         void DisableAutoRepeat() noexcept;
 
@@ -102,12 +90,14 @@ export namespace fatpound::win32::io
         template <typename T>
         static void TrimBuffer_(std::queue<T>& buffer) noexcept
         {
-            while (buffer.size() > bufferSize_)
+            while (buffer.size() > Keyboard::buffer_size_)
             {
                 buffer.pop();
             }
         }
 
+
+    private:
         void OnKeyPressed_(unsigned char keycode) noexcept;
         void OnKeyReleased_(unsigned char keycode) noexcept;
         void OnChar_(char character) noexcept;
@@ -116,15 +106,15 @@ export namespace fatpound::win32::io
 
 
     private:
-        static constexpr unsigned int keyCount_ = 256u;
+        static constexpr unsigned int key_count_ = 256u;
 
-        std::bitset<keyCount_> keystates_;
+        std::bitset<Keyboard::key_count_> key_states_;
 
-        std::queue<Event> keybuffer_;
-        std::queue<char> charbuffer_;
+        std::queue<Event> event_buffer_;
+        std::queue<char>   char_buffer_;
 
-        bool autoRepeatEnabled_ = false;
+        bool auto_repeat_enabled_ = false;
 
-        static constexpr unsigned int bufferSize_ = 16u;
+        static constexpr unsigned int buffer_size_ = 16u;
     };
 }

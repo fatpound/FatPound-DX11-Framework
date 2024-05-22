@@ -11,11 +11,7 @@ import DX11Graphics;
 import std;
 #else
 #if _MSVC_LANG == 202002L
-#ifdef NDEBUG
 import std.core;
-#else
-import <stdexcept>;
-#endif // NDEBUG
 #else
 #error C++20 or greater version required
 #endif // _MSVC_LANG == 202002L

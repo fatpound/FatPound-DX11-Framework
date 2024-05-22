@@ -1,15 +1,6 @@
 module;
 
-#if _MSVC_LANG == 202002L
-#ifndef NDEBUG
-#include <queue>
-#include <optional>
-#endif // !NDEBUG
-#else
-#if _MSVC_LANG < 202002L
-#error C++20 or greater version required
-#endif // _MSVC_LANG < 202002L
-#endif // _MSVC_LANG == 202002L
+#include "../FatWin32_Namespaces.hpp"
 
 export module Mouse;
 
@@ -17,9 +8,7 @@ export module Mouse;
 import std;
 #else
 #if _MSVC_LANG == 202002L
-#ifdef NDEBUG
 import std.core;
-#endif // NDEBUG
 #else
 #error C++20 or greater version required
 #endif // _MSVC_LANG == 202002L
@@ -34,7 +23,7 @@ export namespace fatpound::win32::io
 {
     class Mouse final
     {
-        friend class ::fatpound::win32::dx11::Window;
+        friend class NAMESPACE_DX11::Window;
 
     public:
         Mouse() = default;
@@ -99,9 +88,9 @@ export namespace fatpound::win32::io
             int x_;
             int y_;
 
-            bool leftIsPressed_;
-            bool rightIsPressed_;
-            bool wheelIsPressed_;
+            bool  left_is_pressed_;
+            bool right_is_pressed_;
+            bool wheel_is_pressed_;
         };
 
 
@@ -115,11 +104,12 @@ export namespace fatpound::win32::io
         int GetPosX() const noexcept;
         int GetPosY() const noexcept;
 
+        bool EventBufferIsEmpty() const noexcept;
         bool IsInWindow() const noexcept;
-        bool LeftIsPressed() const noexcept;
+
+        bool  LeftIsPressed() const noexcept;
         bool RightIsPressed() const noexcept;
         bool WheelIsPressed() const noexcept;
-        bool BufferIsEmpty() const noexcept;
 
         void FlushBuffer() noexcept;
 
@@ -131,7 +121,9 @@ export namespace fatpound::win32::io
         void OnMouseMove_(int x, int y) noexcept;
         void OnMouseEnter_() noexcept;
         void OnMouseLeave_() noexcept;
+
         void OnRawDelta_(int dx, int dy) noexcept;
+
         void OnLeftPressed_() noexcept;
         void OnLeftReleased_() noexcept;
         void OnRightPressed_() noexcept;
@@ -141,23 +133,25 @@ export namespace fatpound::win32::io
         void OnWheelUp_() noexcept;
         void OnWheelDown_() noexcept;
         void OnWheelDelta_(int delta) noexcept;
+
         void TrimBuffer_() noexcept;
         void TrimRawInputBuffer_() noexcept;
 
 
     private:
-        std::queue<Event> buffer_;
-        std::queue<RawDelta> rawDeltaBuffer_;
+        std::queue<Event> event_buffer_;
+        std::queue<RawDelta> raw_delta_buffer_;
 
         int x_ = 0;
         int y_ = 0;
-        int wheelDeltaCarry_ = 0;
+        int wheel_delta_carry_ = 0;
 
-        bool isInWindow_ = false;
-        bool leftIsPressed_ = false;
-        bool rightIsPressed_ = false;
-        bool wheelIsPressed_ = false;
+        bool is_in_window_ = false;
 
-        static constexpr unsigned int bufferSize_ = 16u;
+        bool  left_is_pressed_ = false;
+        bool right_is_pressed_ = false;
+        bool wheel_is_pressed_ = false;
+
+        static constexpr unsigned int buffer_size_ = 16u;
     };
 }
