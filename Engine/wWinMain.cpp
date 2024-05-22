@@ -2,16 +2,6 @@
 
 import DX11Framework;
 
-#if _MSVC_LANG > 202002L
-import std;
-#else
-#if _MSVC_LANG == 202002L
-import std.core;
-#else
-#error C++20 or greater version required
-#endif // _MSVC_LANG == 202002L
-#endif // _MSVC_LANG > 202002L
-
 int APIENTRY wWinMain(
 	/* [[maybe_unused]] */ _In_     HINSTANCE hInst,
 	   [[maybe_unused]]    _In_opt_ HINSTANCE hPrevInst,
